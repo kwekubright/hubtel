@@ -1,5 +1,5 @@
 # moodle_enrol_hubtel
-Enrolment plugin for Moodle 3.x or latest | May work on 2.x but not yet tested
+Enrolment plugin for Moodle 3.x | May work on 2.x but not yet tested
 
 1- What is this?
   * This is Hubtel v1.0 - a moodle enrolment plugin tested for Moodle 3.x.
