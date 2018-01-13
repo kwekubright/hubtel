@@ -10,7 +10,7 @@ Enrolment plugin for Moodle 3.x or latest | May work on 2.x but not yet tested
   * Official site: https://www.kwekubright.com | Email: info@kwekubright.com
 
 2- What is Moodle?
-	* Moodle is a learning platform designed to provide educators, administrators and learners with a single robust, 
+  * Moodle is a learning platform designed to provide educators, administrators and learners with a single robust, 
   * secure and integrated system to create personalised learning environments. You can download the software onto your 
   * own web server. If you need assistance with setting up Moodle, you can always inbox me at info@kwekubright.com.
   * More details here: https://www.moodle.org
