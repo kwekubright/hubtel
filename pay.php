@@ -16,7 +16,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This page shows all course enrolment options for current user.
+ * This page make setsup the hubtel checkout form.
  *
  * @package    enrol_hubtel
  * @copyright 2017 Bright Ahiadeke
