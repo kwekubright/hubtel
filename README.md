@@ -19,7 +19,7 @@ Enrolment plugin for Moodle 3.x | May work on 2.x but not yet tested
   * It depends.
   * If you are looking at providing online paid education services in Ghana, this plugin is for you.
   * If you are a developer looking for some enrolment plugin source code to clone and work with, this is for you. It will help you understand how enrolment plugins work in Moodle. 
-  * Because Hubtel currently do not process transactions outside Ghana, you can't use this plugin globally. You can't use it outside Ghana. Hubtel however may begin processing globally; at that point i will update this plugin accordingly.
+  * Because Hubtel currently does not process transactions outside Ghana, you can't use this plugin globally. You can't use it outside Ghana. Hubtel however may begin processing globally; at that point i will update this plugin accordingly.
 
 Copyright:
   * Distributed under the GNU General Public License version 2 or later
