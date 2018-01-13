@@ -18,7 +18,8 @@
  * Hubtel utility script
  *
  * @package    enrol_hubtel
- * @copyright  2004 onwards Martin Dougiamas (http://dougiamas.com)
+ * @copyright 2017 Bright Ahiadeke
+ * @author     Bright Ahiadeke - https://kwekubright.com
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

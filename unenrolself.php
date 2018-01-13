@@ -18,9 +18,11 @@
  * HubTel enrolment plugin - support for user self unenrolment.
  *
  * @package    enrol_hubtel
- * @copyright  2010 Petr Skoda  {@link http://skodak.org}
+ * @copyright 2017 Bright Ahiadeke
+ * @author     Bright Ahiadeke - https://kwekubright.com
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 
 require('../../config.php');
 

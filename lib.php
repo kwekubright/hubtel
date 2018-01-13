@@ -20,7 +20,8 @@
  * This plugin allows you to set up paid courses.
  *
  * @package    enrol_hubtel
- * @copyright  2010 Eugene Venter
+ * @copyright 2017 Bright Ahiadeke
+ * @author     Bright Ahiadeke - https://kwekubright.com
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

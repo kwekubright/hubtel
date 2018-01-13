@@ -18,8 +18,8 @@
  * Hubtel enrolments plugin settings and presets.
  *
  * @package    enrol_hubtel
- * @copyright  2010 Eugene Venter
- * @author     Eugene Venter - based on code by Petr Skoda and others
+ * @copyright 2017 Bright Ahiadeke
+ * @author     Bright Ahiadeke - https://kwekubright.com
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

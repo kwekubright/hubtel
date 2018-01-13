@@ -25,7 +25,7 @@
  *
  * @package    enrol_hubtel
  * @copyright 2017 Bright Ahiadeke
- * @author     Bright Ahiadeke - based on code by others
+ * @author     Bright Ahiadeke - https://kwekubright.com
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 //define('NO_DEBUG_DISPLAY', false);
