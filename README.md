@@ -2,7 +2,7 @@
 Enrolment plugin for Moodle 3.x or latest | May work on 2.x but not yet tested
 
 1- What is this?
-	* This is Hubtel v1.0 - a moodle enrolment plugin tested for Moodle 3.x.
+  * This is Hubtel v1.0 - a moodle enrolment plugin tested for Moodle 3.x.
   * Hubtel (https://www.hubtel.com) is a payment service provider just like Paypal.
   * This plugin may work for Moodle version 2.x but that's not tested yet.
   * This plugin won't work for Moodle version 1.9x and lower.
@@ -16,7 +16,7 @@ Enrolment plugin for Moodle 3.x or latest | May work on 2.x but not yet tested
   * More details here: https://www.moodle.org
 
 3- Is Moodle Enrol Hubtel v1.0 for you?
-	* It depends.
+  * It depends.
   * If you are looking at providing online paid education services in Ghana, this plugin is for you.
   * If you are a developer looking for some enrolment plugin source code to clone and work with, this is for you. It will help you understand how enrolment plugins work in Moodle. 
   * Because Hubtel currently do not process transactions outside Ghana, you can't use this plugin globally. You can't use it outside Ghana. Hubtel however may begin processing globally; at that point i will update this plugin accordingly.
