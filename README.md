@@ -1,4 +1,4 @@
-# moodle_enrol_hubtel
+# moodle_enrol_hubtel (beta)
 Enrolment plugin for Moodle 3.x | May work on 2.x but not yet tested
 
 1- What is this?
