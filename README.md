@@ -6,7 +6,7 @@ Enrolment plugin for Moodle 3.x or latest | May work on 2.x but not yet tested
   * Hubtel (https://www.hubtel.com) is a payment service provider just like Paypal.
   * This plugin may work for Moodle version 2.x but that's not tested yet.
   * This plugin won't work for Moodle version 1.9x and lower.
-	* Developed by Bright Kweku Ahiadeke. 
+  * Developed by Bright Kweku Ahiadeke. 
   * Official site: https://www.kwekubright.com | Email: info@kwekubright.com
 
 2- What is Moodle?
