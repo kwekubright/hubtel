@@ -30,7 +30,7 @@
  */
 //define('NO_DEBUG_DISPLAY', false);
 
-require("../../config.php"); 
+require("../../config.php");
 require_once("lib.php");
 require_once($CFG->libdir . '/eventslib.php');
 require_once($CFG->libdir . '/enrollib.php');
@@ -38,18 +38,21 @@ require_once($CFG->libdir . '/filelib.php');
 
 //Get hubtel configuration values
 $store_details = new stdClass();
-
+//The client secret
 $store_details->clientsecret = $DB->get_record('config_plugins', array('plugin' => 'enrol_hubtel', 'name' => 'clientsecret'), '*', MUST_EXIST)->value;
-
+//The cliendid
 $store_details->clientid = $DB->get_record('config_plugins', array('plugin' => 'enrol_hubtel', 'name' => 'clientid'), '*', MUST_EXIST)->value;
 
-
+//Assign the client id
 $clientId = $store_details->clientid;
+//Assign the client secret
 $clientSecret = $store_details->clientsecret;
+//The auth key
 $basic_auth_key = 'Basic ' . base64_encode($clientId . ':' . $clientSecret);
+//The base url for hubtel requests
 $request_url = "api.hubtel.com/v1/merchantaccount/onlinecheckout/invoice/status/" . $_GET['token'];
 
-
+//Initial connection
 $ch = curl_init($request_url);
 curl_setopt($ch, CURLOPT_HTTPGET, true);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -59,45 +62,56 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, array(
     'Content-Type: application/json',
 ));
 
-//echo curl_setopt($ch, CURLOPT_POSTFIELDS, $create_invoice);exit;
-
 $result = curl_exec($ch);
 $error = curl_error($ch);
 curl_close($ch);
 
-if ($error) {
+if ($error) {//In case of error
     echo $error;
-} else {
+} else { //No error so proceed
     $response_param = json_decode($result);
-	
-
+    //Enrol user if trasaction completed
     if ($response_param->status == "completed") {
 
 	$custom_data = $response_param->custom_data;
-	
+	//Enrol user
 	$course_id = enrol_me_now($custom_data->course_id, $response_param);
     }
 }
 
+//Redirect to final handler of transaction
 redirect("$CFG->wwwroot/enrol/hubtel/return.php?id=" . $course_id);
 
+/**
+ * Enrols user into course
+ *  
+ * @global type $CFG
+ * @global type $USER
+ * @global type $OUTPUT
+ * @global type $PAGE
+ * @global type $DB
+ * @param type $cid
+ * @param type $response_param
+ * @return type integer
+ */
 function enrol_me_now($cid, $response_param) {
-
+    global $CFG, $USER, $OUTPUT, $PAGE, $DB;
+    
+    //$cid may be cost, in which case we return
     if ($cid == "cost") {
 	return;
     };
-
-    global $CFG, $USER, $OUTPUT, $PAGE, $DB;
+    
     //Use the queried course's full name for the item_name field.	
-	$data_ = new stdClass();
-	$data_->course_id = $cid;
-	
-	$data = new stdClass();
+    $data_ = new stdClass();
+    $data_->course_id = $cid;
+
+    $data = new stdClass();
     $data->user_id = $USER->id;
     $data->token = optional_param('token', null, PARAM_TEXT);
     $data->receipt_url = $response_param->receipt_url;
     $data->date = time();
-	
+
     $invoice = $response_param->invoice;
 
     $customer_details = $response_param->customer;
@@ -158,10 +172,10 @@ function enrol_me_now($cid, $response_param) {
     }
 
     // Enrol user
-	//Lets check if record for this token already exists. 
+    //Lets check if record for this token already exists. 
     if (!$DB->record_exists("hubtel_payment", array("token" => $data->token))) {
-		$plugin->enrol_user($plugin_instance, $user->id, $plugin_instance->roleid, $timestart, $timeend);
-	}
+	$plugin->enrol_user($plugin_instance, $user->id, $plugin_instance->roleid, $timestart, $timeend);
+    }
 
     return $cid;
 }
