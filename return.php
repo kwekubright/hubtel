@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -22,14 +23,13 @@
  * @author     Bright Ahiadeke - https://kwekubright.com
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 require("../../config.php");
 require_once("$CFG->dirroot/enrol/hubtel/lib.php");
 
 $id = required_param('id', PARAM_INT);
 
 //Check if is exist 
-if (!$course = $DB->get_record("course", array("id"=>$id))) {
+if (!$course = $DB->get_record("course", array("id" => $id))) {
     redirect($CFG->wwwroot);
 }
 
@@ -47,19 +47,16 @@ if (!empty($SESSION->wantsurl)) {
 
 $fullname = format_string($course->fullname, true, array('context' => $context));
 
-if (is_enrolled($context, NULL, '', true)) { 
+if (is_enrolled($context, NULL, '', true)) {
 
     redirect($destination, get_string('paymentthanks', '', $fullname));
-
 } else {   /// Somehow they aren't enrolled yet!  :-(
-
     $PAGE->set_url($destination);
     echo $OUTPUT->header();
     $a = new stdClass();
     $a->teacher = get_string('defaultcourseteacher');
     $a->fullname = $fullname;
     notice(get_string('paymentsorry', 'enrol_hubtel', $a), $destination);
-	
 }
 
 

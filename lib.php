@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -24,7 +25,6 @@
  * @author     Bright Ahiadeke - https://kwekubright.com
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 defined('MOODLE_INTERNAL') || die();
 
 /**
@@ -35,17 +35,17 @@ defined('MOODLE_INTERNAL') || die();
 class enrol_hubtel_plugin extends enrol_plugin {
 
     public function get_currencies() {
-        // See https://www.hubtel.com/cgi-bin/webscr?cmd=p/sell/mc/mc_intro-outside,
-        // 3-character ISO-4217: https://cms.hubtel.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_api_currency_codes
-        $codes = array(
-            'AUD', 'BRL', 'CAD', 'CHF', 'CZK', 'DKK', 'EUR', 'GBP', 'HKD', 'HUF', 'ILS', 'JPY',
-            'MXN', 'MYR', 'NOK', 'NZD', 'PHP', 'PLN', 'RUB', 'SEK', 'SGD', 'THB', 'TRY', 'TWD', 'USD', 'GHS');
-        $currencies = array();
-        foreach ($codes as $c) {
-            $currencies[$c] = new lang_string($c, 'core_currencies');
-        }
+	// See https://www.hubtel.com/cgi-bin/webscr?cmd=p/sell/mc/mc_intro-outside,
+	// 3-character ISO-4217: https://cms.hubtel.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_api_currency_codes
+	$codes = array(
+	    'AUD', 'BRL', 'CAD', 'CHF', 'CZK', 'DKK', 'EUR', 'GBP', 'HKD', 'HUF', 'ILS', 'JPY',
+	    'MXN', 'MYR', 'NOK', 'NZD', 'PHP', 'PLN', 'RUB', 'SEK', 'SGD', 'THB', 'TRY', 'TWD', 'USD', 'GHS');
+	$currencies = array();
+	foreach ($codes as $c) {
+	    $currencies[$c] = new lang_string($c, 'core_currencies');
+	}
 
-        return $currencies;
+	return $currencies;
     }
 
     /**
@@ -61,40 +61,40 @@ class enrol_hubtel_plugin extends enrol_plugin {
      * @return array of pix_icon
      */
     public function get_info_icons(array $instances) {
-        $found = false;
-        foreach ($instances as $instance) {
-            if ($instance->enrolstartdate != 0 && $instance->enrolstartdate > time()) {
-                continue;
-            }
-            if ($instance->enrolenddate != 0 && $instance->enrolenddate < time()) {
-                continue;
-            }
-            $found = true;
-            break;
-        }
-        if ($found) {
-            return array(new pix_icon('icon', get_string('pluginname', 'enrol_hubtel'), 'enrol_hubtel'));
-        }
-        return array();
+	$found = false;
+	foreach ($instances as $instance) {
+	    if ($instance->enrolstartdate != 0 && $instance->enrolstartdate > time()) {
+		continue;
+	    }
+	    if ($instance->enrolenddate != 0 && $instance->enrolenddate < time()) {
+		continue;
+	    }
+	    $found = true;
+	    break;
+	}
+	if ($found) {
+	    return array(new pix_icon('icon', get_string('pluginname', 'enrol_hubtel'), 'enrol_hubtel'));
+	}
+	return array();
     }
 
     public function roles_protected() {
-        // users with role assign cap may tweak the roles later
-        return false;
+	// users with role assign cap may tweak the roles later
+	return false;
     }
 
     public function allow_unenrol(stdClass $instance) {
-        // users with unenrol cap may unenrol other users manually - requires enrol/hubtel:unenrol
-        return true;
+	// users with unenrol cap may unenrol other users manually - requires enrol/hubtel:unenrol
+	return true;
     }
 
     public function allow_manage(stdClass $instance) {
-        // users with manage cap may tweak period and status - requires enrol/hubtel:manage
-        return true;
+	// users with manage cap may tweak period and status - requires enrol/hubtel:manage
+	return true;
     }
 
     public function show_enrolme_link(stdClass $instance) {
-        return ($instance->status == ENROL_INSTANCE_ENABLED);
+	return ($instance->status == ENROL_INSTANCE_ENABLED);
     }
 
     /**
@@ -103,14 +103,14 @@ class enrol_hubtel_plugin extends enrol_plugin {
      * @return boolean
      */
     public function can_add_instance($courseid) {
-        $context = context_course::instance($courseid, MUST_EXIST);
+	$context = context_course::instance($courseid, MUST_EXIST);
 
-        if (!has_capability('moodle/course:enrolconfig', $context) or !has_capability('enrol/hubtel:config', $context)) {
-            return false;
-        }
+	if (!has_capability('moodle/course:enrolconfig', $context) or ! has_capability('enrol/hubtel:config', $context)) {
+	    return false;
+	}
 
-        // multiple instances supported - different cost for different roles
-        return true;
+	// multiple instances supported - different cost for different roles
+	return true;
     }
 
     /**
@@ -119,7 +119,7 @@ class enrol_hubtel_plugin extends enrol_plugin {
      * @return boolean
      */
     public function use_standard_editing_ui() {
-        return true;
+	return true;
     }
 
     /**
@@ -129,10 +129,10 @@ class enrol_hubtel_plugin extends enrol_plugin {
      * @return int id of new instance, null if can not be created
      */
     public function add_instance($course, array $fields = null) {
-        if ($fields && !empty($fields['cost'])) {
-            $fields['cost'] = unformat_float($fields['cost']);
-        }
-        return parent::add_instance($course, $fields);
+	if ($fields && !empty($fields['cost'])) {
+	    $fields['cost'] = unformat_float($fields['cost']);
+	}
+	return parent::add_instance($course, $fields);
     }
 
     /**
@@ -142,10 +142,10 @@ class enrol_hubtel_plugin extends enrol_plugin {
      * @return boolean
      */
     public function update_instance($instance, $data) {
-        if ($data) {
-            $data->cost = unformat_float($data->cost);
-        }
-        return parent::update_instance($instance, $data);
+	if ($data) {
+	    $data->cost = unformat_float($data->cost);
+	}
+	return parent::update_instance($instance, $data);
     }
 
     /**
@@ -156,81 +156,80 @@ class enrol_hubtel_plugin extends enrol_plugin {
      * @return string html text, usually a form in a text box
      */
     function enrol_page_hook(stdClass $instance) {
-        global $CFG, $USER, $OUTPUT, $PAGE, $DB;
+	global $CFG, $USER, $OUTPUT, $PAGE, $DB;
 
-        ob_start();
+	ob_start();
 
-        if ($DB->record_exists('user_enrolments', array('userid'=>$USER->id, 'enrolid'=>$instance->id))) {
-            return ob_get_clean();
-        }
+	if ($DB->record_exists('user_enrolments', array('userid' => $USER->id, 'enrolid' => $instance->id))) {
+	    return ob_get_clean();
+	}
 
-        if ($instance->enrolstartdate != 0 && $instance->enrolstartdate > time()) {
-            return ob_get_clean();
-        }
+	if ($instance->enrolstartdate != 0 && $instance->enrolstartdate > time()) {
+	    return ob_get_clean();
+	}
 
-        if ($instance->enrolenddate != 0 && $instance->enrolenddate < time()) {
-            return ob_get_clean();
-        }
+	if ($instance->enrolenddate != 0 && $instance->enrolenddate < time()) {
+	    return ob_get_clean();
+	}
 
-        $course = $DB->get_record('course', array('id'=>$instance->courseid));
-        $context = context_course::instance($course->id);
+	$course = $DB->get_record('course', array('id' => $instance->courseid));
+	$context = context_course::instance($course->id);
 
-        $shortname = format_string($course->shortname, true, array('context' => $context));
-        $strloginto = get_string("loginto", "", $shortname);
-        $strcourses = get_string("courses");
+	$shortname = format_string($course->shortname, true, array('context' => $context));
+	$strloginto = get_string("loginto", "", $shortname);
+	$strcourses = get_string("courses");
 
-        // Pass $view=true to filter hidden caps if the user cannot see them
-        if ($users = get_users_by_capability($context, 'moodle/course:update', 'u.*', 'u.id ASC',
-                                             '', '', '', '', false, true)) {
-            $users = sort_by_roleassignment_authority($users, $context);
-            $teacher = array_shift($users);
-        } else {
-            $teacher = false;
-        }
+	// Pass $view=true to filter hidden caps if the user cannot see them
+	if ($users = get_users_by_capability($context, 'moodle/course:update', 'u.*', 'u.id ASC', '', '', '', '', false, true)) {
+	    $users = sort_by_roleassignment_authority($users, $context);
+	    $teacher = array_shift($users);
+	} else {
+	    $teacher = false;
+	}
 
-        if ( (float) $instance->cost <= 0 ) {
-            $cost = (float) $this->get_config('cost');
-        } else {
-            $cost = (float) $instance->cost;
-        }
+	if ((float) $instance->cost <= 0) {
+	    $cost = (float) $this->get_config('cost');
+	} else {
+	    $cost = (float) $instance->cost;
+	}
 
-        if (abs($cost) < 0.01) { // no cost, other enrolment methods (instances) should be used
-            echo '<p>'.get_string('nocost', 'enrol_hubtel').'</p>';
-        } else {
+	if (abs($cost) < 0.01) { // no cost, other enrolment methods (instances) should be used
+	    echo '<p>' . get_string('nocost', 'enrol_hubtel') . '</p>';
+	} else {
 
-            // Calculate localised and "." cost, make sure we send HubTel the same value,
-            // please note HubTel expects amount with 2 decimal places and "." separator.
-            $localisedcost = format_float($cost, 2, true);
-            $cost = format_float($cost, 2, false);
+	    // Calculate localised and "." cost, make sure we send HubTel the same value,
+	    // please note HubTel expects amount with 2 decimal places and "." separator.
+	    $localisedcost = format_float($cost, 2, true);
+	    $cost = format_float($cost, 2, false);
 
-            if (isguestuser()) { // force login only for guest user, not real users with guest role
-                if (empty($CFG->loginhttps)) {
-                    $wwwroot = $CFG->wwwroot;
-                } else {
-                    // This actually is not so secure ;-), 'cause we're
-                    // in unencrypted connection...
-                    $wwwroot = str_replace("http://", "https://", $CFG->wwwroot);
-                }
-                echo '<div class="mdl-align"><p>'.get_string('paymentrequired').'</p>';
-                echo '<p><b>'.get_string('cost').": $instance->currency $localisedcost".'</b></p>';
-                echo '<p><a href="'.$wwwroot.'/login/">'.get_string('loginsite').'</a></p>';
-                echo '</div>';
-            } else {
-                //Sanitise some fields before building the HubTel form
-                $coursefullname  = format_string($course->fullname, true, array('context'=>$context));
-                $courseshortname = $shortname;
-                $userfullname    = fullname($USER);
-                $userfirstname   = $USER->firstname;
-                $userlastname    = $USER->lastname;
-                $useraddress     = $USER->address;
-                $usercity        = $USER->city;
-                $instancename    = $this->get_instance_name($instance);
+	    if (isguestuser()) { // force login only for guest user, not real users with guest role
+		if (empty($CFG->loginhttps)) {
+		    $wwwroot = $CFG->wwwroot;
+		} else {
+		    // This actually is not so secure ;-), 'cause we're
+		    // in unencrypted connection...
+		    $wwwroot = str_replace("http://", "https://", $CFG->wwwroot);
+		}
+		echo '<div class="mdl-align"><p>' . get_string('paymentrequired') . '</p>';
+		echo '<p><b>' . get_string('cost') . ": $instance->currency $localisedcost" . '</b></p>';
+		echo '<p><a href="' . $wwwroot . '/login/">' . get_string('loginsite') . '</a></p>';
+		echo '</div>';
+	    } else {
+		//Sanitise some fields before building the HubTel form
+		$coursefullname = format_string($course->fullname, true, array('context' => $context));
+		$courseshortname = $shortname;
+		$userfullname = fullname($USER);
+		$userfirstname = $USER->firstname;
+		$userlastname = $USER->lastname;
+		$useraddress = $USER->address;
+		$usercity = $USER->city;
+		$instancename = $this->get_instance_name($instance);
 
-                include($CFG->dirroot.'/enrol/hubtel/enrol.php');
-            }
-        }
+		include($CFG->dirroot . '/enrol/hubtel/enrol.php');
+	    }
+	}
 
-        return $OUTPUT->box(ob_get_clean());
+	return $OUTPUT->box(ob_get_clean());
     }
 
     /**
@@ -242,25 +241,25 @@ class enrol_hubtel_plugin extends enrol_plugin {
      * @param int $oldid
      */
     public function restore_instance(restore_enrolments_structure_step $step, stdClass $data, $course, $oldid) {
-        global $DB;
-        if ($step->get_task()->get_target() == backup::TARGET_NEW_COURSE) {
-            $merge = false;
-        } else {
-            $merge = array(
-                'courseid'   => $data->courseid,
-                'enrol'      => $this->get_name(),
-                'roleid'     => $data->roleid,
-                'cost'       => $data->cost,
-                'currency'   => $data->currency,
-            );
-        }
-        if ($merge and $instances = $DB->get_records('enrol', $merge, 'id')) {
-            $instance = reset($instances);
-            $instanceid = $instance->id;
-        } else {
-            $instanceid = $this->add_instance($course, (array)$data);
-        }
-        $step->set_mapping('enrol', $oldid, $instanceid);
+	global $DB;
+	if ($step->get_task()->get_target() == backup::TARGET_NEW_COURSE) {
+	    $merge = false;
+	} else {
+	    $merge = array(
+		'courseid' => $data->courseid,
+		'enrol' => $this->get_name(),
+		'roleid' => $data->roleid,
+		'cost' => $data->cost,
+		'currency' => $data->currency,
+	    );
+	}
+	if ($merge and $instances = $DB->get_records('enrol', $merge, 'id')) {
+	    $instance = reset($instances);
+	    $instanceid = $instance->id;
+	} else {
+	    $instanceid = $this->add_instance($course, (array) $data);
+	}
+	$step->set_mapping('enrol', $oldid, $instanceid);
     }
 
     /**
@@ -273,7 +272,7 @@ class enrol_hubtel_plugin extends enrol_plugin {
      * @param int $userid
      */
     public function restore_user_enrolment(restore_enrolments_structure_step $step, $data, $instance, $userid, $oldinstancestatus) {
-        $this->enrol_user($instance, $userid, null, $data->timestart, $data->timeend, $data->status);
+	$this->enrol_user($instance, $userid, null, $data->timestart, $data->timeend, $data->status);
     }
 
     /**
@@ -284,25 +283,25 @@ class enrol_hubtel_plugin extends enrol_plugin {
      * @return array An array of user_enrolment_actions
      */
     public function get_user_enrolment_actions(course_enrolment_manager $manager, $ue) {
-        $actions = array();
-        $context = $manager->get_context();
-        $instance = $ue->enrolmentinstance;
-        $params = $manager->get_moodlepage()->url->params();
-        $params['ue'] = $ue->id;
-        if ($this->allow_unenrol($instance) && has_capability("enrol/hubtel:unenrol", $context)) {
-            $url = new moodle_url('/enrol/unenroluser.php', $params);
-            $actions[] = new user_enrolment_action(new pix_icon('t/delete', ''), get_string('unenrol', 'enrol'), $url, array('class'=>'unenrollink', 'rel'=>$ue->id));
-        }
-        if ($this->allow_manage($instance) && has_capability("enrol/hubtel:manage", $context)) {
-            $url = new moodle_url('/enrol/editenrolment.php', $params);
-            $actions[] = new user_enrolment_action(new pix_icon('t/edit', ''), get_string('edit'), $url, array('class'=>'editenrollink', 'rel'=>$ue->id));
-        }
-        return $actions;
+	$actions = array();
+	$context = $manager->get_context();
+	$instance = $ue->enrolmentinstance;
+	$params = $manager->get_moodlepage()->url->params();
+	$params['ue'] = $ue->id;
+	if ($this->allow_unenrol($instance) && has_capability("enrol/hubtel:unenrol", $context)) {
+	    $url = new moodle_url('/enrol/unenroluser.php', $params);
+	    $actions[] = new user_enrolment_action(new pix_icon('t/delete', ''), get_string('unenrol', 'enrol'), $url, array('class' => 'unenrollink', 'rel' => $ue->id));
+	}
+	if ($this->allow_manage($instance) && has_capability("enrol/hubtel:manage", $context)) {
+	    $url = new moodle_url('/enrol/editenrolment.php', $params);
+	    $actions[] = new user_enrolment_action(new pix_icon('t/edit', ''), get_string('edit'), $url, array('class' => 'editenrollink', 'rel' => $ue->id));
+	}
+	return $actions;
     }
 
     public function cron() {
-        $trace = new text_progress_trace();
-        $this->process_expirations($trace);
+	$trace = new text_progress_trace();
+	$this->process_expirations($trace);
     }
 
     /**
@@ -311,9 +310,9 @@ class enrol_hubtel_plugin extends enrol_plugin {
      * @return array
      */
     protected function get_status_options() {
-        $options = array(ENROL_INSTANCE_ENABLED  => get_string('yes'),
-                         ENROL_INSTANCE_DISABLED => get_string('no'));
-        return $options;
+	$options = array(ENROL_INSTANCE_ENABLED => get_string('yes'),
+	    ENROL_INSTANCE_DISABLED => get_string('no'));
+	return $options;
     }
 
     /**
@@ -324,14 +323,13 @@ class enrol_hubtel_plugin extends enrol_plugin {
      * @return array
      */
     protected function get_roleid_options($instance, $context) {
-        if ($instance->id) {
-            $roles = get_default_enrol_roles($context, $instance->roleid);
-        } else {
-            $roles = get_default_enrol_roles($context, $this->get_config('roleid'));
-        }
-        return $roles;
+	if ($instance->id) {
+	    $roles = get_default_enrol_roles($context, $instance->roleid);
+	} else {
+	    $roles = get_default_enrol_roles($context, $this->get_config('roleid'));
+	}
+	return $roles;
     }
-
 
     /**
      * Add elements to the edit instance form.
@@ -343,44 +341,44 @@ class enrol_hubtel_plugin extends enrol_plugin {
      */
     public function edit_instance_form($instance, MoodleQuickForm $mform, $context) {
 
-        $mform->addElement('text', 'name', get_string('custominstancename', 'enrol'));
-        $mform->setType('name', PARAM_TEXT);
+	$mform->addElement('text', 'name', get_string('custominstancename', 'enrol'));
+	$mform->setType('name', PARAM_TEXT);
 
-        $options = $this->get_status_options();
-        $mform->addElement('select', 'status', get_string('status', 'enrol_hubtel'), $options);
-        $mform->setDefault('status', $this->get_config('status'));
+	$options = $this->get_status_options();
+	$mform->addElement('select', 'status', get_string('status', 'enrol_hubtel'), $options);
+	$mform->setDefault('status', $this->get_config('status'));
 
-        $mform->addElement('text', 'cost', get_string('cost', 'enrol_hubtel'), array('size' => 4));
-        $mform->setType('cost', PARAM_RAW);
-        $mform->setDefault('cost', format_float($this->get_config('cost'), 2, true));
+	$mform->addElement('text', 'cost', get_string('cost', 'enrol_hubtel'), array('size' => 4));
+	$mform->setType('cost', PARAM_RAW);
+	$mform->setDefault('cost', format_float($this->get_config('cost'), 2, true));
 
-        $hubtelcurrencies = $this->get_currencies();
-        $mform->addElement('select', 'currency', get_string('currency', 'enrol_hubtel'), $hubtelcurrencies);
-        $mform->setDefault('currency', $this->get_config('currency'));
+	$hubtelcurrencies = $this->get_currencies();
+	$mform->addElement('select', 'currency', get_string('currency', 'enrol_hubtel'), $hubtelcurrencies);
+	$mform->setDefault('currency', $this->get_config('currency'));
 
-        $roles = $this->get_roleid_options($instance, $context);
-        $mform->addElement('select', 'roleid', get_string('assignrole', 'enrol_hubtel'), $roles);
-        $mform->setDefault('roleid', $this->get_config('roleid'));
+	$roles = $this->get_roleid_options($instance, $context);
+	$mform->addElement('select', 'roleid', get_string('assignrole', 'enrol_hubtel'), $roles);
+	$mform->setDefault('roleid', $this->get_config('roleid'));
 
-        $options = array('optional' => true, 'defaultunit' => 86400);
-        $mform->addElement('duration', 'enrolperiod', get_string('enrolperiod', 'enrol_hubtel'), $options);
-        $mform->setDefault('enrolperiod', $this->get_config('enrolperiod'));
-        $mform->addHelpButton('enrolperiod', 'enrolperiod', 'enrol_hubtel');
+	$options = array('optional' => true, 'defaultunit' => 86400);
+	$mform->addElement('duration', 'enrolperiod', get_string('enrolperiod', 'enrol_hubtel'), $options);
+	$mform->setDefault('enrolperiod', $this->get_config('enrolperiod'));
+	$mform->addHelpButton('enrolperiod', 'enrolperiod', 'enrol_hubtel');
 
-        $options = array('optional' => true);
-        $mform->addElement('date_time_selector', 'enrolstartdate', get_string('enrolstartdate', 'enrol_hubtel'), $options);
-        $mform->setDefault('enrolstartdate', 0);
-        $mform->addHelpButton('enrolstartdate', 'enrolstartdate', 'enrol_hubtel');
+	$options = array('optional' => true);
+	$mform->addElement('date_time_selector', 'enrolstartdate', get_string('enrolstartdate', 'enrol_hubtel'), $options);
+	$mform->setDefault('enrolstartdate', 0);
+	$mform->addHelpButton('enrolstartdate', 'enrolstartdate', 'enrol_hubtel');
 
-        $options = array('optional' => true);
-        $mform->addElement('date_time_selector', 'enrolenddate', get_string('enrolenddate', 'enrol_hubtel'), $options);
-        $mform->setDefault('enrolenddate', 0);
-        $mform->addHelpButton('enrolenddate', 'enrolenddate', 'enrol_hubtel');
+	$options = array('optional' => true);
+	$mform->addElement('date_time_selector', 'enrolenddate', get_string('enrolenddate', 'enrol_hubtel'), $options);
+	$mform->setDefault('enrolenddate', 0);
+	$mform->addHelpButton('enrolenddate', 'enrolenddate', 'enrol_hubtel');
 
-        if (enrol_accessing_via_instance($instance)) {
-            $warningtext = get_string('instanceeditselfwarningtext', 'core_enrol');
-            $mform->addElement('static', 'selfwarn', get_string('instanceeditselfwarning', 'core_enrol'), $warningtext);
-        }
+	if (enrol_accessing_via_instance($instance)) {
+	    $warningtext = get_string('instanceeditselfwarningtext', 'core_enrol');
+	    $mform->addElement('static', 'selfwarn', get_string('instanceeditselfwarning', 'core_enrol'), $warningtext);
+	}
     }
 
     /**
@@ -395,34 +393,34 @@ class enrol_hubtel_plugin extends enrol_plugin {
      * @return void
      */
     public function edit_instance_validation($data, $files, $instance, $context) {
-        $errors = array();
+	$errors = array();
 
-        if (!empty($data['enrolenddate']) and $data['enrolenddate'] < $data['enrolstartdate']) {
-            $errors['enrolenddate'] = get_string('enrolenddaterror', 'enrol_hubtel');
-        }
+	if (!empty($data['enrolenddate']) and $data['enrolenddate'] < $data['enrolstartdate']) {
+	    $errors['enrolenddate'] = get_string('enrolenddaterror', 'enrol_hubtel');
+	}
 
-        $cost = str_replace(get_string('decsep', 'langconfig'), '.', $data['cost']);
-        if (!is_numeric($cost)) {
-            $errors['cost'] = get_string('costerror', 'enrol_hubtel');
-        }
+	$cost = str_replace(get_string('decsep', 'langconfig'), '.', $data['cost']);
+	if (!is_numeric($cost)) {
+	    $errors['cost'] = get_string('costerror', 'enrol_hubtel');
+	}
 
-        $validstatus = array_keys($this->get_status_options());
-        $validcurrency = array_keys($this->get_currencies());
-        $validroles = array_keys($this->get_roleid_options($instance, $context));
-        $tovalidate = array(
-            'name' => PARAM_TEXT,
-            'status' => $validstatus,
-            'currency' => $validcurrency,
-            'roleid' => $validroles,
-            'enrolperiod' => PARAM_INT,
-            'enrolstartdate' => PARAM_INT,
-            'enrolenddate' => PARAM_INT
-        );
+	$validstatus = array_keys($this->get_status_options());
+	$validcurrency = array_keys($this->get_currencies());
+	$validroles = array_keys($this->get_roleid_options($instance, $context));
+	$tovalidate = array(
+	    'name' => PARAM_TEXT,
+	    'status' => $validstatus,
+	    'currency' => $validcurrency,
+	    'roleid' => $validroles,
+	    'enrolperiod' => PARAM_INT,
+	    'enrolstartdate' => PARAM_INT,
+	    'enrolenddate' => PARAM_INT
+	);
 
-        $typeerrors = $this->validate_param_types($data, $tovalidate);
-        $errors = array_merge($errors, $typeerrors);
+	$typeerrors = $this->validate_param_types($data, $tovalidate);
+	$errors = array_merge($errors, $typeerrors);
 
-        return $errors;
+	return $errors;
     }
 
     /**
@@ -431,8 +429,8 @@ class enrol_hubtel_plugin extends enrol_plugin {
      * @return int exit code, 0 means ok
      */
     public function sync(progress_trace $trace) {
-        $this->process_expirations($trace);
-        return 0;
+	$this->process_expirations($trace);
+	return 0;
     }
 
     /**
@@ -442,8 +440,8 @@ class enrol_hubtel_plugin extends enrol_plugin {
      * @return bool
      */
     public function can_delete_instance($instance) {
-        $context = context_course::instance($instance->courseid);
-        return has_capability('enrol/hubtel:config', $context);
+	$context = context_course::instance($instance->courseid);
+	return has_capability('enrol/hubtel:config', $context);
     }
 
     /**
@@ -453,7 +451,8 @@ class enrol_hubtel_plugin extends enrol_plugin {
      * @return bool
      */
     public function can_hide_show_instance($instance) {
-        $context = context_course::instance($instance->courseid);
-        return has_capability('enrol/hubtel:config', $context);
+	$context = context_course::instance($instance->courseid);
+	return has_capability('enrol/hubtel:config', $context);
     }
+
 }

@@ -72,7 +72,6 @@ if ($error) {//In case of error
     $response_param = json_decode($result);
     //Enrol user if trasaction completed
     if ($response_param->status == "completed") {
-
 	$custom_data = $response_param->custom_data;
 	//Enrol user
 	$course_id = enrol_me_now($custom_data->course_id, $response_param);
@@ -96,13 +95,12 @@ redirect("$CFG->wwwroot/enrol/hubtel/return.php?id=" . $course_id);
  */
 function enrol_me_now($cid, $response_param) {
     global $CFG, $USER, $OUTPUT, $PAGE, $DB;
-    
+
     //$cid may be cost, in which case we return
     if ($cid == "cost") {
 	return;
     };
-    
-    //Use the queried course's full name for the item_name field.	
+
     $data_ = new stdClass();
     $data_->course_id = $cid;
 

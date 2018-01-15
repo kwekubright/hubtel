@@ -105,12 +105,11 @@ make_payment($course, $id);
 
 //Convert currency to GHS
 function convertCurrency($amount, $from, $to) {
-    
-    if($from == 'ghs')
-    {
+
+    if ($from == 'ghs') {
 	return $amount;
     }
-    
+
     $data = file_get_contents("https://finance.google.com/finance/converter?a=$amount&from=$from&to=$to");
     preg_match("/<span class=bld>(.*)<\/span>/", $data, $converted);
     $converted = preg_replace("/[^0-9.]/", "", $converted[1]);
@@ -121,32 +120,30 @@ function convertCurrency($amount, $from, $to) {
 function make_payment($course, $cid) {
     global $CFG, $DB, $USER;
     //Get hubtel configuration values
-	$store_details = new stdClass();
-	
-	$store_details->currency = $DB->get_record('config_plugins', array('plugin' => 'enrol_hubtel', 'name' => 'allhubtelcurrency'), '*', MUST_EXIST)->value;
-	
-	$store_details->storename = $DB->get_record('config_plugins', array('plugin' => 'enrol_hubtel', 'name' => 'storename'), '*', MUST_EXIST)->value;
-	
-	$store_details->tag_line = $DB->get_record('config_plugins', array('plugin' => 'enrol_hubtel', 'name' => 'tag_line'), '*', MUST_EXIST)->value;
-	
-	$store_details->phone = $DB->get_record('config_plugins', array('plugin' => 'enrol_hubtel', 'name' => 'phone'), '*', MUST_EXIST)->value;
-	
-	$store_details->logo_url = $DB->get_record('config_plugins', array('plugin' => 'enrol_hubtel', 'name' => 'logo_url'), '*', MUST_EXIST)->value;
-	
-	$store_details->clientsecret = $DB->get_record('config_plugins', array('plugin' => 'enrol_hubtel', 'name' => 'clientsecret'), '*', MUST_EXIST)->value;
-	
-	$store_details->clientid = $DB->get_record('config_plugins', array('plugin' => 'enrol_hubtel', 'name' => 'clientid'), '*', MUST_EXIST)->value;
-	
+    $store_details = new stdClass();
+
+    $store_details->currency = $DB->get_record('config_plugins', array('plugin' => 'enrol_hubtel', 'name' => 'allhubtelcurrency'), '*', MUST_EXIST)->value;
+
+    $store_details->storename = $DB->get_record('config_plugins', array('plugin' => 'enrol_hubtel', 'name' => 'storename'), '*', MUST_EXIST)->value;
+
+    $store_details->tag_line = $DB->get_record('config_plugins', array('plugin' => 'enrol_hubtel', 'name' => 'tag_line'), '*', MUST_EXIST)->value;
+
+    $store_details->phone = $DB->get_record('config_plugins', array('plugin' => 'enrol_hubtel', 'name' => 'phone'), '*', MUST_EXIST)->value;
+
+    $store_details->logo_url = $DB->get_record('config_plugins', array('plugin' => 'enrol_hubtel', 'name' => 'logo_url'), '*', MUST_EXIST)->value;
+
+    $store_details->clientsecret = $DB->get_record('config_plugins', array('plugin' => 'enrol_hubtel', 'name' => 'clientsecret'), '*', MUST_EXIST)->value;
+
+    $store_details->clientid = $DB->get_record('config_plugins', array('plugin' => 'enrol_hubtel', 'name' => 'clientid'), '*', MUST_EXIST)->value;
+
     //Get course cost values
     $cost_record = $DB->get_record_sql('SELECT `cost` FROM {enrol} WHERE `courseid` = ' . $cid . ' AND `enrol` = "hubtel"', array(1));
-	
-	if($store_details->currency !== 'GHS')
-	{
-		$cost = (float) convertCurrency($cost_record->cost, $store_details->currency, "GHS");
-	}
-	else{
-		$cost = (float) $cost_record->cost;
-	}
+
+    if ($store_details->currency !== 'GHS') {
+	$cost = (float) convertCurrency($cost_record->cost, $store_details->currency, "GHS");
+    } else {
+	$cost = (float) $cost_record->cost;
+    }
 
     //Start preparing variables for the hubtel checkout form
     $invoice = array(
